@@ -1,0 +1,26 @@
+{
+    "name": "markei/wordpress-spam-protection",
+    "type": "wordpress-plugin",
+    "license": "MIT",
+    "description": "Simple spam filter for WordPress ContactForm 7 plugin",
+    "homepage": "https://github.com/Markei/wordpress-spam-protection",
+    "authors": [
+        {
+            "name": "Maarten de Keizer",
+            "homepage": "http://www.maartendekeizer.nl/"
+        }
+    ],
+    "keywords": [
+        "wordpress",
+        "wordpress-plugin",
+        "spam"
+    ],
+    "support": {
+        "issues": "https://github.com/Markei/wordpress-smtp-configuration/issues",
+        "docs": "https://github.com/Markei/wordpress-smtp-configuration"
+    },
+    "require": {
+        "php": ">=7.1.0",
+        "composer/installers": "~1.0"
+    }
+}
