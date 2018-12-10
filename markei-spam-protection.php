@@ -79,7 +79,12 @@ function markei_spam_protection_number_of_spam_words_in_text($text, &$foundWords
         'girls',
         '.pl',
         'profit',
-        'geld'
+        'geld',
+        'webshop.se',
+        '1000',
+        '3000',
+        '5000',
+        'invest'
     ];
 
     $found = 0;
