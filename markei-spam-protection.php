@@ -26,7 +26,7 @@ add_filter('wpcf7_validate', function ($result, $tags = null) {
         }
     }
 
-    if (array_sum($score) > 2) {
+    if (array_sum($score) > 1) {
         foreach ($score as $tag => $fieldScore) {
             if ($fieldScore > 0) {
                 $result->invalidate($tag, 'Dit bericht bevat woorden of delen van woorden die op de spamlijst staan. Uw bericht is daarom geweigerd. Gevonden woorden of delen van woorden: ' . implode(', ', $foundWords[$tag]));
@@ -84,7 +84,15 @@ function markei_spam_protection_number_of_spam_words_in_text($text, &$foundWords
         '1000',
         '3000',
         '5000',
-        'invest'
+        'invest',
+        'femme',
+        'sexe',
+        'sexywoman',
+        'bit.ly',
+        'amazinoffer',
+        'loopia',
+        'just click',
+        'amazingoffer'
     ];
 
     $found = 0;
