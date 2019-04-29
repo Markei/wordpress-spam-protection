@@ -92,7 +92,22 @@ function markei_spam_protection_number_of_spam_words_in_text($text, &$foundWords
         'amazinoffer',
         'loopia',
         'just click',
-        'amazingoffer'
+        'amazingoffer',
+        'iphone',
+        'airpods',
+        'to.ht',
+        'winiphone',
+        'seksdating',
+        'coins',
+        'bitcoin',
+        'bitcoins',
+        'xyz',
+        'btc',
+        'blockchain',
+        'secret',
+        'secretflirters',
+        'socialleader.eu',
+        'socialleader',
     ];
 
     $found = 0;
