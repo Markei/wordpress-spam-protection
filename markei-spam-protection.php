@@ -3,7 +3,7 @@
 Plugin Name:  Markei.nl WordPress Spam Protection
 Plugin URI:   https://github.com/markei/wordpress-spam-protection/
 Description:  Simple spam filter for WordPress ContactForm 7 plugin
-Version:      1.0.0
+Version:      1.1.0
 Author:       Markei.nl
 Author URI:   https://www.markei.nl
 License:      MIT
@@ -41,111 +41,35 @@ function markei_spam_protection_number_of_spam_words_in_text($text, &$foundWords
 {
     $text = strtolower($text);
 
-    $words = [
-        'sex',
-        'dating',
-        'hookup',
-        'asian',
-        'ray-ban',
-        'sunglass',
-        'dollars',
-        'girls',
-        '.ru',
-        'sissy',
-        'women',
-        '555',
-        'medical',
-        'oxford',
-        'porno',
-        'porn',
-        'hypnosis',
-        'pills',
-        'viagra',
-        'adult',
-        'a href',
-        'loans',
-        'approval',
-        '</a>',
-        'credit',
-        'writing',
-        'binary',
-        'payday',
-        'captcha',
-        'fitness',
-        'refurbished',
-        'bit.ly',
-        '.tk',
-        '$',
-        'girls',
-        '.pl',
-        'profit',
-        'geld',
-        'webshop.se',
-        '1000',
-        '3000',
-        '5000',
-        'invest',
-        'femme',
-        'sexe',
-        'sexywoman',
-        'bit.ly',
-        'amazinoffer',
-        'loopia',
-        'just click',
-        'amazingoffer',
-        'iphone',
-        'airpods',
-        'to.ht',
-        'winiphone',
-        'seksdating',
-        'coins',
-        'bitcoin',
-        'bitcoins',
-        'xyz',
-        'btc',
-        'blockchain',
-        'secret',
-        'secretflirters',
-        'socialleader.eu',
-        'socialleader',
-        'girl',
-        'sexe',
-        'microsoft',
-        'china',
-        'oem',
-        'dvd',
-        'mail.ru',
-        'usd',
-        'million',
-        'gratuits',
-        'adultes',
-        'canadiens',
-        'traffic',
-        'videomaker',
-        'hacked',
-        'money',
-        'millionen',
-        'clients',
-        'weapons',
-        'russia',
-        'black',
-        'inexpensive',
-        'iphone',
-        'x',
-        'contest',
-        'giveaway',
-        'win',
-        'free',
-    ];
+    $words =  explode(" ", $text);
 
-    $found = 0;
+    $ch = curl_init('https://antispam.markei.nl/database.json');
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 7);
+    $spamDbResponse = curl_exec($ch);
+    if (curl_errno($ch) !== 0) {
+        trigger_error('Can not reach antispam service', E_USER_WARNING);
+        return -1;
+    }
+    curl_close($ch);
 
-    foreach ($words as $word) {
-        if (strpos($text, $word) !== false) {
-            $found ++;
-            $foundWords[] = $word;
+    $spamDb = json_decode($spamDbResponse, true);
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        trigger_error('Can not decode antispam service response', E_USER_WARNING);
+        return -1;
+    }
+
+    $spamScore = 0;
+    $spamWords = [];
+    foreach($words as $word) {
+        if (array_key_exists($word, $spamDb)) {
+            $spamScore = $spamScore + $spamDb[$word];
+            $spamWords[] = $word;
         }
     }
 
-    return $found;
+    $foundWords = array_unique($spamWords);
+
+    return $spamScore;
 }
